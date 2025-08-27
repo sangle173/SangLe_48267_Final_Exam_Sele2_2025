@@ -61,6 +61,22 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.20.1</version>
         </dependency>
+        
+        <!-- 
+        Video Recording Dependencies (Optional):
+        For actual video recording functionality, you can add:
+        
+        <dependency>
+            <groupId>org.monte</groupId>
+            <artifactId>monte-screen-recorder</artifactId>
+            <version>0.7.7.0</version>
+        </dependency>
+        
+        Or use other recording tools like:
+        - FFmpeg wrapper libraries
+        - Browser-specific recording capabilities
+        - TestNG/Selenium Grid video recording features
+        -->
     </dependencies>
     <build>
         <plugins>

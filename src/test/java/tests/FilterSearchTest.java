@@ -36,18 +36,18 @@ public class FilterSearchTest extends BaseTest {
         });
     }
     
-    @Step("Step 2: Navigate to Book Store section")
+    @Step("Step 2: Navigate to Book Store")
     private BookStorePage step2NavigateToBookStore() {
         return Allure.step("Click on Book Store menu and navigate to the section", () -> {
             BookStorePage bookStorePage = homePage.navigateToBookStore();
-            AllureStepHelper.addInfo("Successfully navigated to Book Store page");
+            AllureStepHelper.addInfoWithScreenshot("Successfully navigated to Book Store page");
             return bookStorePage;
         });
     }
     
     @Step("Step 3: Verify breadcrumb shows 'Trang chủ > Nhà Sách Tiki'")
     private void step3VerifyBreadcrumb(BookStorePage bookStorePage) {
-        Allure.step("Check that breadcrumb navigation shows correct path", () -> {
+        AllureStepHelper.verify("Check that breadcrumb navigation shows correct path", () -> {
             try {
                 bookStorePage.verifyBreadcrumb();
                 AllureStepHelper.addInfo("Breadcrumb verification passed");
