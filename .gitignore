@@ -1,0 +1,25 @@
+# Build artifacts
+target/
+.allure/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Test reports
+allure-results/
+test-output/
+
+# Chrome driver logs
+chromedriver.log

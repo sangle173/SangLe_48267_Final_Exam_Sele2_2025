@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="TikiAutomationSuite">
+    
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <listener class-name="listeners.AllureListener"/>
+    </listeners>
+    
+    <test name="FilterSearchTests">
+        <classes>
+            <class name="tests.FilterSearchTest"/>
+        </classes>
+    </test>
+    
+    <test name="ViewedItemsTests">
+        <classes>
+            <class name="tests.ViewedItemsTest"/>
+        </classes>
+    </test>
+</suite>
