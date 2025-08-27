@@ -7,6 +7,8 @@ import io.qameta.allure.Story;
 import models.TikiTestData;
 import org.testng.annotations.Test;
 import pages.BookStorePage;
+import pages.FilterDialogPage;
+import pages.ResultGridPage;
 import utils.JsonReader;
 
 @Feature("Product Filtering")
@@ -14,44 +16,61 @@ public class FilterSearchTest extends BaseTest {
     
     @Test
     @Story("Filter search condition for product")
-    @Description("Verify user can filter search condition for product in Book Store")
+    @Description("Test Case 001: Verify user can filter search condition for product - Complete implementation with price range and supplier filter")
     public void testFilterSearchCondition() {
         logger.info("Starting Test Case 001: Verify user can filter search condition for product");
         
-        // Step 1: Read test data from JSON file
-        TikiTestData testData = Allure.step("Step 1: Load test data from JSON configuration", () -> {
+        // Step 1: Read test data from JSON file (for future use)
+        Allure.step("Step 1: Load test data from JSON configuration", () -> {
             TikiTestData data = JsonReader.read("src/test/resources/testdata.json", TikiTestData.class);
-            logger.info("Test data loaded: {}", data.getSupplier());
-            return data;
+            logger.info("Test data loaded: Supplier={}", data.getSupplier());
         });
         
-        // Step 2: Navigate to Book Store section
+        // Step 2: Navigate to Book Store section (Nhà Sách Tiki)
         BookStorePage bookStorePage = Allure.step("Step 2: Navigate to Book Store section", () -> {
-            BookStorePage page = homePage.navigateToBookStore();
-            logger.info("Successfully navigated to Book Store page");
-            return page;
+            return homePage.navigateToBookStore();
         });
         
-        // Step 3: Verify breadcrumb navigation
+        // Step 3: Verify breadcrumb shows 'Trang chủ > Nhà Sách Tiki'
         Allure.step("Step 3: Verify breadcrumb shows 'Trang chủ > Nhà Sách Tiki'", () -> {
             bookStorePage.verifyBreadcrumb();
-            logger.info("Breadcrumb verification completed successfully");
         });
         
-        // Step 4: Apply filter search condition using test data
-        Allure.step("Step 4: Apply filter search condition", () -> {
-            logger.info("Filter search condition prepared for: {}", testData.getSupplier());
-            // Note: Actual filter implementation would go here based on your BookStorePage methods
-            // bookStorePage.applySupplierFilter(testData.getSupplier());
+        // Step 4: Click on "Tất cả" button under "Tất cả sản phẩm" section
+        FilterDialogPage filterDialogPage = Allure.step("Step 4: Click on 'Tất cả' button under 'Tất cả sản phẩm' section", () -> {
+            return bookStorePage.clickAllProductsButton();
         });
         
-        // Step 5: Verify filter functionality is available
-        Allure.step("Step 5: Verify filter search functionality", () -> {
-            logger.info("Filter search condition functionality verified successfully");
-            // Note: Actual filter verification would go here
-            // bookStorePage.verifyFilterResults(testData.getSupplier());
+        // Step 5: Verify "Tất cả bộ lọc" dialog is displayed
+        Allure.step("Step 5: Verify 'Tất cả bộ lọc' dialog is displayed", () -> {
+            filterDialogPage.verifyFilterDialogDisplayed();
         });
         
-        logger.info("Test Case 001 completed successfully");
+        // Step 6: Check on "Nhà cung cấp Nhà sách Fahasa" checkbox
+        Allure.step("Step 6: Select 'Nhà sách Fahasa' supplier checkbox", () -> {
+            filterDialogPage.selectFahasaSupplier();
+        });
+        
+        // Step 7: Enter price range 60.000 - 140.000 and click "Xem Kết quả"
+        ResultGridPage resultGridPage = Allure.step("Step 7: Enter price range 60.000 - 140.000 and click 'Xem Kết quả'", () -> {
+            int minPrice = 60000;
+            int maxPrice = 140000;
+            filterDialogPage.enterPriceRange(minPrice, maxPrice);
+            return filterDialogPage.clickViewResultsButton();
+        });
+        
+        // Step 8: Verify supplier filter is highlighted
+        Allure.step("Step 8: Verify 'Nhà sách Fahasa' supplier is highlighted", () -> {
+            resultGridPage.verifySupplierFilterHighlighted();
+        });
+        
+        // Step 9: Verify all product prices are within the specified range
+        Allure.step("Step 9: Verify all product prices are within range 60.000đ - 140.000đ", () -> {
+            int minPrice = 60000;
+            int maxPrice = 140000;
+            resultGridPage.verifyProductPricesInRange(minPrice, maxPrice);
+        });
+        
+        logger.info("Test Case 001 completed successfully - All filter conditions verified");
     }
 }
