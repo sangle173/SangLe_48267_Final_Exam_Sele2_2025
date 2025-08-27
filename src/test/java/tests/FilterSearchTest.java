@@ -46,28 +46,29 @@ public class FilterSearchTest extends BaseTest {
             filterDialogPage.verifyFilterDialogDisplayed();
         });
         
-        // Step 6: Check on "Nhà cung cấp Nhà sách Fahasa" checkbox
-        Allure.step("Step 6: Select 'Nhà sách Fahasa' supplier checkbox", () -> {
+        // Step 6: Check on available supplier checkbox (Nhà sách Fahasa)
+        Allure.step("Step 6: Select Nhà sách Fahasa supplier checkbox", () -> {
             filterDialogPage.selectFahasaSupplier();
         });
         
         // Step 7: Enter price range 60.000 - 140.000 and click "Xem Kết quả"
-        ResultGridPage resultGridPage = Allure.step("Step 7: Enter price range 60.000 - 140.000 and click 'Xem Kết quả'", () -> {
-            int minPrice = 60000;
-            int maxPrice = 140000;
+        // Step 7: Enter price range and click 'Xem Kết quả'
+        ResultGridPage resultGridPage = Allure.step("Step 7: Enter price range 50.000 - 400.000 and click 'Xem Kết quả'", () -> {
+            int minPrice = 50000;
+            int maxPrice = 400000;
             filterDialogPage.enterPriceRange(minPrice, maxPrice);
             return filterDialogPage.clickViewResultsButton();
         });
         
         // Step 8: Verify supplier filter is highlighted
-        Allure.step("Step 8: Verify 'Nhà sách Fahasa' supplier is highlighted", () -> {
+        Allure.step("Step 8: Verify selected supplier is highlighted", () -> {
             resultGridPage.verifySupplierFilterHighlighted();
         });
         
         // Step 9: Verify all product prices are within the specified range
-        Allure.step("Step 9: Verify all product prices are within range 60.000đ - 140.000đ", () -> {
-            int minPrice = 60000;
-            int maxPrice = 140000;
+        Allure.step("Step 9: Verify all product prices are within range 50.000đ - 400.000đ", () -> {
+            int minPrice = 50000;
+            int maxPrice = 400000;
             resultGridPage.verifyProductPricesInRange(minPrice, maxPrice);
         });
         

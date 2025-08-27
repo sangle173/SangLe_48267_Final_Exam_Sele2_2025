@@ -30,7 +30,11 @@ public class WebDriverManager {
         
         Configuration.timeout = 10000;
         Configuration.screenshots = true;
+        Configuration.savePageSource = false;
         Configuration.reportsFolder = "target/screenshots";
+        
+        // Enable better screenshot integration
+        System.setProperty("selenide.reports", "target/allure-results");
     }
     
     @Step("Setup browser from config")

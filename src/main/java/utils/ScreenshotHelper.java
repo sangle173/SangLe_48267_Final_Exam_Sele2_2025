@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Screenshot utility for Allure reporting
@@ -31,28 +29,31 @@ public class ScreenshotHelper {
      */
     public static void takeScreenshot(String name) {
         try {
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
-            String fileName = String.format("%s_%s", name.replaceAll("[^a-zA-Z0-9]", "_"), timestamp);
+            // Use Selenide's built-in screenshot 
+            String screenshotName = name.replaceAll("[^a-zA-Z0-9\\s]", "").replaceAll("\\s+", "_");
             
-            String screenshotPath = Selenide.screenshot(fileName);
+            // Take screenshot using Selenide
+            String screenshotPath = Selenide.screenshot(screenshotName);
             
             if (screenshotPath != null) {
                 File screenshotFile = new File(screenshotPath);
                 if (screenshotFile.exists()) {
-                    // Copy to screenshots directory
-                    Path targetPath = Paths.get(SCREENSHOTS_DIR, screenshotFile.getName());
-                    Files.copy(screenshotFile.toPath(), targetPath);
-                    
-                    // Attach to Allure
+                    // Read screenshot bytes and attach to Allure
                     byte[] screenshotBytes = Files.readAllBytes(screenshotFile.toPath());
                     Allure.addAttachment(name, "image/png", 
                         new ByteArrayInputStream(screenshotBytes), "png");
-                    
                     logger.info("Screenshot taken and attached: {}", name);
                 }
             }
         } catch (Exception e) {
             logger.error("Failed to take screenshot: {}", e.getMessage(), e);
+            // Try simple Selenide screenshot as last resort
+            try {
+                Selenide.screenshot(name.replaceAll("[^a-zA-Z0-9]", "_"));
+                logger.info("Fallback screenshot taken: {}", name);
+            } catch (Exception ex) {
+                logger.error("Fallback screenshot also failed: {}", ex.getMessage());
+            }
         }
     }
 
