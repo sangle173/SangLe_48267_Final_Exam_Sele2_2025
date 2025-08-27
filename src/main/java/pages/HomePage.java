@@ -9,7 +9,6 @@ import static com.codeborne.selenide.Selenide.*;
 public class HomePage extends BasePage {
     
     // Locators
-    private final SelenideElement bookStoreMenu = $x("//a[contains(text(),'Nhà Sách Tiki')]");
     private final SelenideElement sportsMenu = $x("//a[contains(text(),'Thể Thao - Dã Ngoại')]");
     private final SelenideElement recentlyViewedSection = $x("//div[contains(@class,'recently-viewed')]");
     
@@ -17,11 +16,8 @@ public class HomePage extends BasePage {
     public BookStorePage navigateToBookStore() {
         logger.info("Navigating to Book Store");
         
-        // First ensure page is interactive by closing any popups
-        waitForPageToLoad();
-        
-        // Try to find and click the book store menu
-        clickElement(bookStoreMenu, "Book Store Menu");
+        // Navigate directly to the book store page to avoid clicking on promotional links
+        open("https://tiki.vn/nha-sach-tiki/c8322");
         
         // Handle any popups that might appear after navigation (only if visible)
         PopupHandler.closePopupIfVisible();
